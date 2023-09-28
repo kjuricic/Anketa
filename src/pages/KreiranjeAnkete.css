@@ -1,76 +1,8 @@
-/* Styling for the KreiranjeAnkete component */
-form {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  input[type="text"],
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  input[type="checkbox"] {
-    margin-right: 5px;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  h3 {
-    font-size: 18px;
-    margin-top: 20px;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Styling for the list of choices */
-  div > input[type="text"] {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  div > button {
-    display: inline-block;
-    background-color: #f00;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 0;
-    margin-left: 10px;
-  }
-  
-  div > button:hover {
-    background-color: #c00;
-  }
-  
+/* KreiranjeAnkete.css */
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Dodajte dodatne stilove prema potrebi */

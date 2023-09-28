@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
-
-//import Home from './pages/Home';
+import { GlobalStateProvider } from './GlobalStateContext'; // Dodano
 
 import Pocetna from './pages/Pocetna';
 import DetaljiAnkete from './pages/DetaljiAnkete';
@@ -11,17 +9,18 @@ import KreiranjeAnkete from './pages/KreiranjeAnkete';
 
 import './App.css';
 
-
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route index element = {<Pocetna/>}></Route>
-          <Route path = '/KreiranjeAnkete' element= {<KreiranjeAnkete/>}></Route>
-          <Route path = '/DetaljiAnkete' element= {<DetaljiAnkete/>}></Route>
-          <Route path = '/DijeljenjeAnkete' element= {<DijeljenjeAnkete/>}></Route>       
-        </Routes>
+        <GlobalStateProvider> {/* Dodano */}
+          <Routes>
+            <Route index element={<Pocetna />} />
+            <Route path="/KreiranjeAnkete" element={<KreiranjeAnkete />} />
+            <Route path="/DetaljiAnkete" element={<DetaljiAnkete />} />
+            <Route path="/DijeljenjeAnkete" element={<DijeljenjeAnkete />} />
+          </Routes>
+        </GlobalStateProvider> {/* Dodano */}
       </BrowserRouter>
     </div>
   );
