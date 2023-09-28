@@ -1,0 +1,72 @@
+/* Question.css */
+.question-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f5f5f5;
+  }
+  
+  .question-container input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .question-container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .question-container button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .choice-container {
+    margin-top: 10px;
+  }
+  
+  .choice-container input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .choice-container button {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 3px 6px;
+    border: none;
+    border-radius: 3px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  
+  /* Styling for checkbox */
+  .choice-container label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .choice-container label input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  /* Styling for remove question button */
+  .remove-question-button {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 3px 6px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  

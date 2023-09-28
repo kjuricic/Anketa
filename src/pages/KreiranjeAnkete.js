@@ -1,44 +1,63 @@
 import React, { useState } from 'react';
 import { useGlobalState } from '../GlobalStateContext';
 import InfoForm from '../components/InfoForm';
+import Question from '../components/Question';
 import './KreiranjeAnkete.css';
 
 function KreiranjeAnkete() {
   const { state, dispatch } = useGlobalState();
   const [question, setQuestion] = useState('');
-  const [questions, setQuestions] = useState([]); // Spremi sva pitanja
+  const [questions, setQuestions] = useState([]);
 
-// src/pages/KreiranjeAnkete.js
-// Importi i ostatak koda...
-
-const handleSaveSurvey = () => {
-  const surveyData = {
-    info: state.info, // Pretpostavljajući da info sadrži naziv i opis ankete
-    questions: questions,
+  const handleSaveSurvey = () => {
+    const surveyData = {
+      info: state.info,
+      questions: questions,
+    };
+    dispatch({ type: 'SAVE_SURVEY', payload: surveyData });
   };
-  dispatch({ type: 'SAVE_SURVEY', payload: surveyData });
-  // Preusmjeravanje korisnika na stranicu za dijeljenje ankete
-  // history.push('/dijeljenje-ankete');
-};
 
   const handleAddQuestion = () => {
-    if (question.trim() === '') return; // Ne dodajemo prazna pitanja
-    setQuestions([...questions, { question, isMultiChoice: false, choices: [] }]); // Dodaj novo pitanje
-    setQuestion(''); // Resetiraj unos pitanja
+    if (question.trim() === '') return;
+    // Generiraj numeraciju pitanja koristeći indeks pitanja
+    const questionNumber = questions.length + 1;
+    const newQuestion = {
+      question: `${questionNumber}. ${question}`,
+      isMultiChoice: false,
+      choices: [],
+    };
+    setQuestions([...questions, newQuestion]);
+    setQuestion('');
   };
-
- const handleAddChoice = (questionIndex) => {
-  // Dodaj opciju pitanju na određenom indeksu samo ako nije prazna
-  const updatedQuestions = [...questions];
-  const newChoice = { label: '' }; // Prazan izbor
-  updatedQuestions[questionIndex].choices.push(newChoice);
-  setQuestions(updatedQuestions);
-};
-
 
   const handleRemoveQuestion = (questionIndex) => {
     const updatedQuestions = [...questions];
     updatedQuestions.splice(questionIndex, 1);
+    setQuestions(updatedQuestions);
+    
+    // Ažuriraj numeraciju pitanja
+    updatedQuestions.forEach((q, index) => {
+      q.question = `${index + 1}. ${q.question.substring(q.question.indexOf(' ') + 1)}`;
+    });
+    setQuestions(updatedQuestions);
+  };
+
+  const handleQuestionChange = (questionIndex, key, value) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex][key] = value;
+    setQuestions(updatedQuestions);
+  };
+
+  const handleAddChoice = (questionIndex) => {
+    const updatedQuestions = [...questions];
+    const newChoice = { label: '' };
+    updatedQuestions[questionIndex].choices.push(newChoice);
+    setQuestions(updatedQuestions);
+  };
+
+  const handleChoiceChange = (questionIndex, choiceIndex, value) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].choices[choiceIndex].label = value;
     setQuestions(updatedQuestions);
   };
 
@@ -47,29 +66,6 @@ const handleSaveSurvey = () => {
     updatedQuestions[questionIndex].choices.splice(choiceIndex, 1);
     setQuestions(updatedQuestions);
   };
-
-  // Dodajte funkciju za promjenu opcija pitanja
-  const handleQuestionChange = (questionIndex, key, value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex][key] = value;
-    setQuestions(updatedQuestions);
-  };
-
-  const handleChoiceChange = (questionIndex, choiceIndex, key, value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].choices[choiceIndex][key] = value;
-    setQuestions(updatedQuestions);
-  };
-
-  //const handleSaveSurvey = () => {
-   // const surveyData = {
-     // info: state.info,
-      //questions: questions,
-   // };
-    //dispatch({ type: 'SAVE_SURVEY', payload: surveyData });
-    // Preusmjeravanje korisnika na stranicu za dijeljenje ankete
-    // history.push('/dijeljenje-ankete');
-  //};
 
   return (
     <div className="kreiranje-ankete-container">
@@ -82,45 +78,23 @@ const handleSaveSurvey = () => {
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
       />
-      <label>
-        Višestruki odabir:
-        <input
-          type="checkbox"
-          checked={questions.length > 0 && questions[questions.length - 1].isMultiChoice}
-          onChange={(e) => handleQuestionChange(questions.length - 1, 'isMultiChoice', e.target.checked)}
-        />
-      </label>
       <button onClick={handleAddQuestion}>Dodaj pitanje</button>
+
       {questions.map((q, questionIndex) => (
-        <div key={questionIndex}>
-          <button onClick={() => handleRemoveQuestion(questionIndex)}>Izbriši pitanje</button>
-          <p>{q.question}</p>
-          <label>
-            Višestruki odabir:
-            <input
-              type="checkbox"
-              checked={q.isMultiChoice}
-              onChange={(e) => handleQuestionChange(questionIndex, 'isMultiChoice', e.target.checked)}
-            />
-          </label>
-          <h4>Opcije:</h4>
-          <button onClick={() => handleAddChoice(questionIndex)}>Dodaj izbor</button>
-          {q.choices.map((choice, choiceIndex) => (
-            <div key={choiceIndex}>
-              <input
-                type="text"
-                placeholder="Unesite naziv izbora"
-                value={choice.label}
-                onChange={(e) => handleChoiceChange(questionIndex, choiceIndex, 'label', e.target.value)}
-              />
-              <button onClick={() => handleRemoveChoice(questionIndex, choiceIndex)}>Izbriši izbor</button>
-            </div>
-          ))}
-        </div>
-      ))}
+        <Question
+          key={questionIndex}
+          question={q}
+          onQuestionChange={(key, value) => handleQuestionChange(questionIndex, key, value)}
+          onAddChoice={() => handleAddChoice(questionIndex)}
+          onRemoveQuestion={() => handleRemoveQuestion(questionIndex)}
+          onChoiceChange={(choiceIndex, value) => handleChoiceChange(questionIndex, choiceIndex, value)}
+          onRemoveChoice={(choiceIndex) => handleRemoveChoice(questionIndex, choiceIndex)}
+        />
+      ))
+      } 
       <button onClick={handleSaveSurvey}>Spremi anketu</button>
     </div>
   );
+}
 
-          }
 export default KreiranjeAnkete;
