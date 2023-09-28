@@ -7,19 +7,22 @@ export const useGlobalState = () => {
   return useContext(GlobalStateContext);
 };
 
+const initialState = {
+  survey: null, // Dodajte svoje početne vrijednosti ovdje
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SAVE_SURVEY':
+      return { ...state, survey: action.payload };
+    // Dodajte ostale akcije ovdje
+
+    default:
+      return state;
+  };
+};
+
 export const GlobalStateProvider = ({ children }) => {
-  const initialState = {
-    // Dodajte svoje početne vrijednosti ovdje
-  };
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      // Definirajte svoje akcije ovdje
-      default:
-        return state;
-    }
-  };
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (

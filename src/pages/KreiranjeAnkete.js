@@ -8,18 +8,33 @@ function KreiranjeAnkete() {
   const [question, setQuestion] = useState('');
   const [questions, setQuestions] = useState([]); // Spremi sva pitanja
 
+// src/pages/KreiranjeAnkete.js
+// Importi i ostatak koda...
+
+const handleSaveSurvey = () => {
+  const surveyData = {
+    info: state.info, // Pretpostavljajući da info sadrži naziv i opis ankete
+    questions: questions,
+  };
+  dispatch({ type: 'SAVE_SURVEY', payload: surveyData });
+  // Preusmjeravanje korisnika na stranicu za dijeljenje ankete
+  // history.push('/dijeljenje-ankete');
+};
+
   const handleAddQuestion = () => {
     if (question.trim() === '') return; // Ne dodajemo prazna pitanja
     setQuestions([...questions, { question, isMultiChoice: false, choices: [] }]); // Dodaj novo pitanje
     setQuestion(''); // Resetiraj unos pitanja
   };
 
-  const handleAddChoice = (questionIndex) => {
-    // Dodaj opciju pitanju na određenom indeksu
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].choices.push({ label: '' });
-    setQuestions(updatedQuestions);
-  };
+ const handleAddChoice = (questionIndex) => {
+  // Dodaj opciju pitanju na određenom indeksu samo ako nije prazna
+  const updatedQuestions = [...questions];
+  const newChoice = { label: '' }; // Prazan izbor
+  updatedQuestions[questionIndex].choices.push(newChoice);
+  setQuestions(updatedQuestions);
+};
+
 
   const handleRemoveQuestion = (questionIndex) => {
     const updatedQuestions = [...questions];
@@ -46,15 +61,15 @@ function KreiranjeAnkete() {
     setQuestions(updatedQuestions);
   };
 
-  const handleSaveSurvey = () => {
-    const surveyData = {
-      info: state.info,
-      questions: questions,
-    };
-    dispatch({ type: 'SAVE_SURVEY', payload: surveyData });
+  //const handleSaveSurvey = () => {
+   // const surveyData = {
+     // info: state.info,
+      //questions: questions,
+   // };
+    //dispatch({ type: 'SAVE_SURVEY', payload: surveyData });
     // Preusmjeravanje korisnika na stranicu za dijeljenje ankete
     // history.push('/dijeljenje-ankete');
-  };
+  //};
 
   return (
     <div className="kreiranje-ankete-container">
@@ -106,6 +121,6 @@ function KreiranjeAnkete() {
       <button onClick={handleSaveSurvey}>Spremi anketu</button>
     </div>
   );
-}
 
+          }
 export default KreiranjeAnkete;
